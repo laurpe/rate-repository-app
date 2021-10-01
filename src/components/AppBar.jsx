@@ -1,8 +1,15 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Pressable } from 'react-native';
 import Constants from 'expo-constants';
-import AppBarTab from './AppBarTab';
 import theme from '../theme';
+import { GET_AUTHORIZED_USER } from '../graphql/queries';
+import { useQuery } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
+import useAuthStorage from '../hooks/useAuthStorage';
+import Text from './Text';
+import { Link } from 'react-router-native';
+import { useHistory } from 'react-router-native';
+
 
 const styles = StyleSheet.create({
     container: {
@@ -11,15 +18,50 @@ const styles = StyleSheet.create({
         backgroundColor: theme.colors.appBarBackground,
         display: 'flex',
         flexDirection: 'row'
+    },
+    tabContainer: {
+        paddingTop: 20,
+        paddingBottom: 5,
+        paddingLeft: 10,
+        paddingRight: 30
     }
 });
 
+const AppBarTab = (props) => {
+    return (
+        <Pressable style={styles.tabContainer} onPress={props.onPress}>
+            <Text fontSize="subheading" fontWeight="bold" color="heading">
+                {props.children}
+            </Text>
+        </Pressable>
+    );
+};
+
 const AppBar = () => {
+    const apolloClient = useApolloClient();
+    const authStorage = useAuthStorage();
+    const history = useHistory();
+
+    const signOut = async () => {
+        await authStorage.removeAccessToken();
+        apolloClient.resetStore();
+        history.push('/');
+    };
+
+    const result = useQuery(GET_AUTHORIZED_USER, {
+        fetchPolicy: 'cache-and-network',
+    });
+
     return (
         <View style={styles.container}>
             <ScrollView horizontal>
-                <AppBarTab title="Repositories" link="/" />
-                <AppBarTab title="Sign in" link="/signin"/>
+                <Link to="/" component={AppBarTab}>Repositories</Link>
+                {!result.data || !result.data.authorizedUser &&
+                    <Link to="/signin" component={AppBarTab}>Sign in</Link>
+                }
+                {result.data && result.data.authorizedUser &&
+                    <AppBarTab onPress={signOut} >Sign out</AppBarTab>
+                }
             </ScrollView>
         </View>
     );
