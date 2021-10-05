@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import theme from '../theme';
 import Text from './Text';
+import { roundValue } from '../utils/roundValue';
 
 
 const styles = StyleSheet.create({
@@ -53,30 +54,23 @@ const styles = StyleSheet.create({
 });
 
 const Statistics = ({ stargazersCount, forksCount, reviewCount, ratingAverage }) => {
-    const roundValue = (value) => {
-        if (value >= 1000) {
-            const roundedValue = Math.round((value / 1000) * 10) / 10;
-            return `${roundedValue}k`;
-        }
-        return value;
-    };
 
     return (
         <View style={styles.statisticsContainer}>
             <View style={styles.statisticsItem}>
-                <Text fontWeight="bold">{roundValue(stargazersCount)}</Text>
+                <Text fontWeight="bold" testID="stargazersCount">{roundValue(stargazersCount)}</Text>
                 <Text>Stars</Text>
             </View>
             <View style={styles.statisticsItem}>
-                <Text fontWeight="bold">{roundValue(forksCount)}</Text>
+                <Text fontWeight="bold" testID="forksCount">{roundValue(forksCount)}</Text>
                 <Text>Forks</Text>
             </View>
             <View style={styles.statisticsItem}>
-                <Text fontWeight="bold">{roundValue(reviewCount)}</Text>
+                <Text fontWeight="bold" testID="reviewCount">{roundValue(reviewCount)}</Text>
                 <Text>Reviews</Text>
             </View>
             <View style={styles.statisticsItem}>
-                <Text fontWeight="bold">{roundValue(ratingAverage)}</Text>
+                <Text fontWeight="bold" testID="ratingAverage">{roundValue(ratingAverage)}</Text>
                 <Text>Rating</Text>
             </View>
         </View>
@@ -99,7 +93,7 @@ const LanguageTag = ({ language }) => {
 
     return (
         <View style={styles.languageTag}>
-            <Text style={{ color: 'white' }}>{language}</Text>
+            <Text style={{ color: 'white' }} testID="language">{language}</Text>
         </View>
     );
 };
@@ -107,14 +101,14 @@ const LanguageTag = ({ language }) => {
 const Name = ({ name }) => {
 
     return (
-        <Text style={styles.descriptionItem} fontSize="subheading" fontWeight="bold">{name}</Text>
+        <Text style={styles.descriptionItem} fontSize="subheading" fontWeight="bold" testID="name">{name}</Text>
     );
 };
 
 const Description = ({ description }) => {
 
     return (
-        <Text style={styles.descriptionItem}>{description}</Text>
+        <Text style={styles.descriptionItem} testID="description">{description}</Text>
     );
 };
 
