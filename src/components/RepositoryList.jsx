@@ -22,7 +22,7 @@ export const RepositoryListContainer = ({ repositories }) => {
 };
 
 const RepositoryList = () => {
-    const { repositories } = useRepositories();
+    const repositories = useRepositories();
 
     return <RepositoryListContainer repositories={repositories} />;
 };
