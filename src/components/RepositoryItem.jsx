@@ -21,8 +21,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     statisticsItem: {
-        margin: 5,
-        padding: 5,
+        marginBottom: 10,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-between'
@@ -33,17 +32,14 @@ const styles = StyleSheet.create({
         padding: 5
     },
     descriptionContainer: {
-        flex: 1,
         flexShrink: 1,
         marginLeft: 10,
     },
     descriptionItem: {
         padding: 5,
-        flex: 1,
         flexWrap: 'wrap'
     },
     languageTag: {
-        flex: 1,
         flexWrap: 'wrap',
         alignSelf: 'flex-start',
         padding: 5,

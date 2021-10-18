@@ -1,7 +1,8 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Pressable } from 'react-native';
 import useRepositories from '../hooks/useRepositories';
 import RepositoryItem from './RepositoryItem';
+import { useHistory } from 'react-router-native';
 
 
 export const RepositoryListContainer = ({ repositories }) => {
@@ -10,11 +11,15 @@ export const RepositoryListContainer = ({ repositories }) => {
         ? repositories.edges.map(edge => edge.node)
         : [];
 
+    let history = useHistory();
+
     return (
         <FlatList
             data={repositoryNodes}
             renderItem={({ item }) => (
-                <RepositoryItem item={item} />
+                <Pressable onPress={() => history.push(`/repositories/${item.id}`)}>
+                    <RepositoryItem item={item} />
+                </Pressable>
             )}
             keyExtractor={item => item.id}
         />
