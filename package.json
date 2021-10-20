@@ -24,9 +24,11 @@
   "dependencies": {
     "@apollo/client": "^3.4.11",
     "@react-native-async-storage/async-storage": "^1.15.8",
+    "date-fns": "^2.25.0",
     "dotenv": "^10.0.0",
     "expo": "~40.0.0",
     "expo-font": "^9.2.1",
+    "expo-linking": "~2.0.1",
     "expo-status-bar": "~1.0.3",
     "formik": "^2.2.9",
     "graphql": "^15.5.3",
@@ -36,8 +38,7 @@
     "react-native-unimodules": "^0.14.6",
     "react-native-web": "~0.13.12",
     "react-router-native": "^5.2.1",
-    "yup": "^0.32.9",
-    "expo-linking": "~2.0.1"
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
