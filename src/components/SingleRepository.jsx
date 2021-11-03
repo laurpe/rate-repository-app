@@ -75,6 +75,7 @@ const RepositoryInfo = () => {
     const id = useParams().id;
 
     const { data, loading } = useQuery(GET_REPOSITORY, {
+        fetchPolicy: 'cache-and-network',
         variables: { id }
     });
 
@@ -127,7 +128,8 @@ const SingleRepository = () => {
     const id = useParams().id;
 
     const { data, loading } = useQuery(GET_REVIEWS, {
-        variables: { id }
+        variables: { id },
+        fetchPolicy: 'cache-and-network'
     });
 
     if (loading) {

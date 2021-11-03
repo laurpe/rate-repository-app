@@ -60,7 +60,10 @@ const AppBar = () => {
                     <Link to="/signin" component={AppBarTab}>Sign in</Link>
                 }
                 {result.data && result.data.authorizedUser &&
-                    <AppBarTab onPress={signOut} >Sign out</AppBarTab>
+                    <>
+                        <Link to="/createreview" component={AppBarTab}>Create review</Link>
+                        <AppBarTab onPress={signOut} >Sign out</AppBarTab>
+                    </>
                 }
             </ScrollView>
         </View>
