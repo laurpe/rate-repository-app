@@ -57,7 +57,10 @@ const AppBar = () => {
             <ScrollView horizontal>
                 <Link to="/" component={AppBarTab}>Repositories</Link>
                 {!result.data || !result.data.authorizedUser &&
-                    <Link to="/signin" component={AppBarTab}>Sign in</Link>
+                    <>
+                        <Link to="/signin" component={AppBarTab}>Sign in</Link>
+                        <Link to="/signup" component={AppBarTab}>Sign up</Link>
+                    </>
                 }
                 {result.data && result.data.authorizedUser &&
                     <>
