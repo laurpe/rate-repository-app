@@ -6,8 +6,9 @@ import * as Linking from 'expo-linking';
 import RepositoryItem from './RepositoryItem';
 import theme from '../theme';
 import Text from './Text';
-import { GET_REPOSITORY, GET_REVIEWS } from '../graphql/queries';
+import { GET_REPOSITORY } from '../graphql/queries';
 import { format, parseISO } from 'date-fns';
+import useReviews from '../hooks/useReviews';
 
 
 const styles = StyleSheet.create({
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
 });
 
 const RepositoryInfo = () => {
-    const id = useParams().id;
+    const { id } = useParams();
 
     const { data, loading } = useQuery(GET_REPOSITORY, {
         fetchPolicy: 'cache-and-network',
@@ -125,33 +126,32 @@ const ReviewItem = ({ review }) => {
 };
 
 const SingleRepository = () => {
-    const id = useParams().id;
+    const { id } = useParams();
 
-    const { data, loading } = useQuery(GET_REVIEWS, {
-        variables: { id },
-        fetchPolicy: 'cache-and-network'
+    const { reviews, fetchMore } = useReviews({
+        id: id,
+        first: 4
     });
 
-    if (loading) {
-        return (
-            <View>
-                <Text>loading reviews...</Text>
-            </View>
-        );
-    } else {
-        const reviewNodes = data.repository.reviews
-            ? data.repository.reviews.edges.map(edge => edge.node)
-            : [];
+    const reviewNodes = reviews
+        ? reviews.edges.map(edge => edge.node)
+        : [];
 
-        return (
-            <FlatList
-                data={reviewNodes}
-                renderItem={({ item }) => <ReviewItem review={item} />}
-                keyExtractor={({ id }) => id}
-                ListHeaderComponent={() => <RepositoryInfo />}
-            />
-        );
-    }
+    const onEndReach = () => {
+        fetchMore();
+    };
+
+    return (
+        <FlatList
+            data={reviewNodes}
+            renderItem={({ item }) => <ReviewItem review={item} />}
+            keyExtractor={({ id }) => id}
+            ListHeaderComponent={<RepositoryInfo />}
+            onEndReached={onEndReach}
+            onEndReachedThreshold={0.1}
+        />
+    );
+
 
 };
 

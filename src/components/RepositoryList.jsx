@@ -22,9 +22,7 @@ const styles = StyleSheet.create({
 const FilterBar = ({ searchKeyword, setSearchKeyword }) => {
 
     const onChangeFilter = (value) => {
-        console.log('value: ', value);
         setSearchKeyword(value);
-        console.log('filter: ', searchKeyword);
     };
 
     return (
@@ -37,8 +35,6 @@ const FilterBar = ({ searchKeyword, setSearchKeyword }) => {
         </View>
     );
 };
-
-//todo: katso vielä teetkö tyylille jotain
 
 const SortingMenu = ({ setOrderBy, setOrderDirection }) => {
     const [visible, setVisible] = useState(false);
@@ -84,7 +80,7 @@ const SortingMenu = ({ setOrderBy, setOrderDirection }) => {
     );
 };
 
-export const RepositoryListContainer = ({ repositories, setOrderBy, setOrderDirection, searchKeyword, setSearchKeyword }) => {
+export const RepositoryListContainer = ({ repositories, setOrderBy, setOrderDirection, searchKeyword, setSearchKeyword, onEndReach }) => {
 
     const repositoryNodes = repositories
         ? repositories.edges.map(edge => edge.node)
@@ -107,6 +103,8 @@ export const RepositoryListContainer = ({ repositories, setOrderBy, setOrderDire
                     <SortingMenu setOrderBy={setOrderBy} setOrderDirection={setOrderDirection} />
                 </>
             }
+            onEndReached={onEndReach}
+            onEndReachedThreshold={0.5}
         />
     );
 };
@@ -118,7 +116,16 @@ const RepositoryList = () => {
     const [searchKeyword, setSearchKeyword] = useState('');
     const [debouncedSearchKeyword] = useDebounce(searchKeyword, 500);
 
-    const repositories = useRepositories(orderBy, orderDirection, debouncedSearchKeyword);
+    const { repositories, fetchMore } = useRepositories({
+        orderBy: orderBy,
+        orderDirection: orderDirection,
+        searchKeyword: debouncedSearchKeyword,
+        first: 8
+    });
+
+    const onEndReach = () => {
+        fetchMore();
+    };
 
     return (
         <RepositoryListContainer
@@ -127,6 +134,7 @@ const RepositoryList = () => {
             setOrderDirection={setOrderDirection}
             searchKeyword={searchKeyword}
             setSearchKeyword={setSearchKeyword}
+            onEndReach={onEndReach}
         />
     );
 
