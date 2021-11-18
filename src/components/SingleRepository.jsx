@@ -7,8 +7,8 @@ import RepositoryItem from './RepositoryItem';
 import theme from '../theme';
 import Text from './Text';
 import { GET_REPOSITORY } from '../graphql/queries';
-import { format, parseISO } from 'date-fns';
 import useReviews from '../hooks/useReviews';
+import ReviewItem from './ReviewItem';
 
 
 const styles = StyleSheet.create({
@@ -104,33 +104,12 @@ const RepositoryInfo = () => {
     );
 };
 
-const ReviewItem = ({ review }) => {
-    return (
-        <View style={styles.reviewContainer}>
-            <View style={styles.rating}>
-                <Text style={styles.ratingText}>{review.rating}</Text>
-            </View>
-            <View style={styles.reviewInfoContainer}>
-                <View style={styles.titleContainer}>
-                    <Text style={styles.titleText}>{review.user.username}</Text>
-                </View>
-                <View style={styles.dateContainer}>
-                    <Text style={styles.dateText}>{format(parseISO(review.createdAt), 'dd.MM.yyyy')}</Text>
-                </View>
-                <View style={styles.textContainer}>
-                    <Text style={styles.reviewText}>{review.text}</Text>
-                </View>
-            </View>
-        </View>
-    );
-};
-
 const SingleRepository = () => {
     const { id } = useParams();
 
     const { reviews, fetchMore } = useReviews({
         id: id,
-        first: 4
+        first: 8
     });
 
     const reviewNodes = reviews

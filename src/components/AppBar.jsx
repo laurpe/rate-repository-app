@@ -49,6 +49,7 @@ const AppBar = () => {
     };
 
     const result = useQuery(GET_AUTHORIZED_USER, {
+        variables: { includeReviews: false },
         fetchPolicy: 'cache-and-network',
     });
 
@@ -65,6 +66,7 @@ const AppBar = () => {
                 {result.data && result.data.authorizedUser &&
                     <>
                         <Link to="/createreview" component={AppBarTab}>Create review</Link>
+                        <Link to="/myreviews" component={AppBarTab}>My reviews</Link>
                         <AppBarTab onPress={signOut} >Sign out</AppBarTab>
                     </>
                 }
