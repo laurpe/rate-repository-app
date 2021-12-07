@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 
 
 const useMyReviews = ({ first }) => {
-    const { data, loading, fetchMore } = useQuery(GET_AUTHORIZED_USER, {
+    const { data, loading, fetchMore, refetch } = useQuery(GET_AUTHORIZED_USER, {
         variables: { includeReviews: true, first },
         fetchPolicy: 'cache-and-network'
     });
@@ -25,7 +25,8 @@ const useMyReviews = ({ first }) => {
 
     return {
         myReviews: data?.authorizedUser.reviews,
-        fetchMore: handleFetchMore
+        fetchMore: handleFetchMore,
+        refetch
     };
 
 };
